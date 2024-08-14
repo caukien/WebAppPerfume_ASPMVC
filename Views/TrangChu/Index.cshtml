@@ -1,0 +1,169 @@
+﻿@model List<WebAppPerfume.Models.PRODUCT>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+}
+<div class="header">
+    <div class="container">
+        @{ 
+            Html.RenderPartial("ClientNav");
+        }
+        <div class="row">
+            <div class="col-2">
+                <h1>Welcome to Our Perfume Collection <br> A New Style!</h1>
+                <p>
+                    Chào mừng bạn đến với bộ sưu tập nước hoa của chúng tôi. Chúng tôi tự hào giới thiệu đến bạn những
+                    hương thơm tinh tế và độc đáo nhất từ các thương hiệu uy tín trên thế giới. Bộ sưu tập của chúng tôi
+                    mang đến nhiều lựa chọn đa dạng để phản ánh cá tính và phong cách riêng của bạn.
+                </p>
+                <a href="/Sanpham" class="btn">Explore Now &#8594;</a>
+            </div>
+            <div class="col-2">
+                <img src="~/image/assets/logo4.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="small-container">
+    <h2 class="title">Featured Products</h2>
+    <div class="row">
+        @foreach (var element in Model)
+        {
+            <div class="col-4">
+                <a href="~/Sanpham/Chitiet/@element.PRODID"><img src="@element.PIC"></a>
+                <h4>@element.PRODNAME</h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>@string.Format("{0:#,0}", element.PRICE) VND</p>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Offer -->
+<div class="offer">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-2">
+                <img src="~/image/assets/logo3.png" class="offer-img">
+            </div>
+            <div class="col-2">
+                <p>Exclusively Available on RedStore</p>
+                <h1>Profumo D'Vuiton</h1>
+                <small>
+                    Néroli Portofino est un parfum enivrant qui capture l'esprit rafraîchissant et
+                    luxueux de la côte italienne. Cette fragrance offre un mélange subtil de néroli,
+                    de citron sicilien, de bergamote, et d'ambre blanc, créant une expérience olfactive riche et
+                    lumineuse qui évoque le glamour méditerranéen.<br>
+                </small>
+                <a href="/Sanpham" class="btn">Buy Now &#8594;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonial -->
+<div class="testimonial">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>
+                    Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                    industry's standard dummy text.
+                </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img src="/image/assets/user-1.png">
+                <h3>Sean Parker</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>
+                    Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                    industry's standard dummy text.
+                </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img src="/image/assets/user-2.png">
+                <h3>Mike Smith</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>
+                    Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been
+                    industry's standard dummy text.
+                </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                </div>
+                <img src="/image/assets/user-3.png">
+                <h3>Mabel Joe</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Brands -->
+
+<div class="brands">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-5">
+                <img src="/image/assets/gucci.png">
+            </div>
+            <div class="col-5">
+                <img src="/image/assets/LV.png">
+            </div>
+            <div class="col-5">
+                <img src="/image/assets/dior.png">
+            </div>
+            <div class="col-5">
+                <img src="/image/assets/DG.png">
+            </div>
+            <div class="col-5">
+                <img src="/image/assets/channel.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+    @{ 
+        Html.RenderPartial("ClientFooter");
+    }
+
+<!-- javascript -->
+
+<script>
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+        function menutoggle() {
+            if (MenuItems.style.maxHeight == "0px") {
+                MenuItems.style.maxHeight = "200px"
+            }
+            else {
+                MenuItems.style.maxHeight = "0px"
+            }
+        }
+</script>

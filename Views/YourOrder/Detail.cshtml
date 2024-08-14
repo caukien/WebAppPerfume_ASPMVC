@@ -1,0 +1,50 @@
+﻿@model List<WebAppPerfume.Models.OrderDetail>
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+    int i = 0;
+}
+<div class="container">
+    @{
+        Html.RenderPartial("ClientNav");
+    }
+</div>
+
+<!-- Cart items details -->
+<div class="small-container cart-page">
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Tên sản phẩm</th>
+            <th>Ảnh</th>
+            <th>Số lượng</th>
+            <th>Giá</th>
+        </tr>
+        @if (Model != null && Model.Any()) // Kiểm tra xem Model có tồn tại và không rỗng
+        {
+            foreach (var element in Model)
+            {
+                i++;
+                <tr>
+                    <td>
+                        @i
+                    </td>                    
+                    <td>@element.proName</td>
+                    <td><img src="@element.proPIC" /></td>
+                    <td>@element.qty</td>
+                    <td>@string.Format("{0:#,0}", element.proPrice) VND</td>                    
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">Empty</td>
+            </tr>
+        }
+    </table>
+</div>
+<!-- Footer -->
+@{
+    Html.RenderPartial("ClientFooter");
+}

@@ -1,0 +1,110 @@
+﻿@model List<WebAppPerfume.Models.CART>
+@using WebAppPerfume.Helper
+@{
+    ViewBag.Title = "Giỏ hàng";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+    var user = WebAppPerfume.App_Start.SessionConfig.GetUser();
+}
+
+
+<div class="container">
+    @{
+        Html.RenderPartial("ClientNav");
+    }
+</div>
+
+<!-- Cart items details -->
+<div class="small-container cart-page">
+    <table>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+        </tr>
+        @if (Model != null && Model.Any()) // Kiểm tra xem Model có tồn tại và không rỗng
+        {
+            foreach (var element in Model)
+            {
+                <tr>
+                    <td>
+                        <div class="cart-info">
+                            <img src="@element.PIC">
+                            <div>
+                                <p>@element.NAME</p>
+                                <small>@string.Format("{0:#,0}", element.PRICE) VND</small>
+                                <br>
+                                <form action="~/Cart/Delete/@element.CARTID?_method=DELETE" method="POST">
+                                    <button style="background-color: transparent; border: none; cursor: pointer;">
+                                        <a>Remove</a>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <p style="padding: 35px">@element.QTY</p>
+                        
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2">No items in the cart</td>
+            </tr>
+        }
+    </table>
+    <br>
+    <div class="total-price">
+        @if (ViewBag.TotalAmount != null) // Kiểm tra xem ViewBag.TotalAmount có tồn tại
+        {
+            <table>
+                <tr>
+                    <td>Total</td>
+                    <td>@string.Format("{0:#,0}", ViewBag.TotalAmount) VND</td>
+                    @*<td>@string.Format("{0:#,0}", Currency.ConvertVNĐtoUSD(ViewBag.TotalAmount)) USD</td>*@
+                </tr>
+            </table>
+            <form action="@Url.Action("Pay2PayPal", "Cart")" method="POST" enctype="application/x-www-form-urlencoded">
+                <input type="image" src="http://www.paypal.com/en_US/i/btn/x-click-but01.gif" name="submit">
+            </form>
+                
+            
+            <form action="@Url.Action("Confirm", "Cart")" method="post" enctype="multipart/form-data">
+                <button type="submit" class="btn">
+                    Check-out
+                </button>
+            </form>
+            @*<div>
+                <label for="paymentMethod">Chọn phương thức thanh toán:</label>
+                <select id="paymentMethod" style="height:30px">
+                    <option value="cash">Thanh toán khi nhận hàng</option>
+                    <option value="paypal">Thanh toán bằng PayPal</option>
+                </select>
+                <button id="payButton" class="btn">Thanh toán</button>
+            </div>*@
+        }
+    </div>
+    
+</div>
+<!-- Footer -->
+    @{ 
+        Html.RenderPartial("ClientFooter");
+    }
+
+<script type="text/javascript">
+    // Lắng nghe sự kiện khi nút thanh toán được nhấn
+    document.getElementById("payButton").addEventListener("click", function() {
+        // Lấy giá trị của dropdown list
+        var paymentMethod = document.getElementById("paymentMethod").value;
+
+        // Xử lý tùy thuộc vào phương thức thanh toán được chọn
+        if (paymentMethod === "paypal") {
+            // Chuyển hướng đến trang thanh toán PayPal
+            window.location.href = "@Url.Action("", "")";
+        } else if (paymentMethod === "cash") {
+            // Chuyển hướng đến trang xác nhận thanh toán khi nhận hàng
+            window.location.href = "@Url.Action("Confirm", "Cart")";
+        }
+    });
+</script>

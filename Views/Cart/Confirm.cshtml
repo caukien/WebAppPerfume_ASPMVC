@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Confirm";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+}
+<div class="container">
+    @{
+        Html.RenderPartial("ClientNav");
+    }
+</div>
+
+<div class="account-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <div class="form-container">
+                    <div class="form-btn">
+                        <span>Recipe Information</span>
+                    </div>
+                    <form action="@Url.Action("Success", "Cart")" method="post" enctype="multipart/form-data" style="width: 100%">
+                        <p>Người nhận</p>
+                        <input name="name" placeholder="Tên người nhận" type="text" required/>
+                        <p>Địa chỉ nhận hàng</p>
+                        <input name="address" placeholder="Địa chỉ nhận" type="text" required/>
+                        <button type="submit" class="btn">Confirm</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    Html.RenderPartial("ClientFooter");
+}

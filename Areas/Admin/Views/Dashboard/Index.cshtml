@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+    var user = WebAppPerfume.App_Start.SessionConfig.GetUser();
+}
+
+@{ 
+    Html.RenderPartial("AdminHeader");
+}
+<div class="container-fluid">
+    <div class="row">
+        @{ 
+            Html.RenderPartial("AdminSidebar");
+        }
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="align-items-center justify-content-center">
+                <h1 class="text-center">WELCOME @user.FIRSTNAME @user.LASTNAME</h1>
+            </div>
+        </main>
+    </div>
+</div>
+

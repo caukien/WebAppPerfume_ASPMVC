@@ -1,0 +1,116 @@
+﻿@model WebAppPerfume.Models.Class1
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+    var user = WebAppPerfume.App_Start.SessionConfig.GetUser();
+}
+<div class="container">
+    @{ Html.RenderPartial("ClientNav");}
+</div>
+<!-- Single Products -->
+<div class="small-container single-product">
+    <div class="row">
+        <div class="col-2">
+            <form action="" method="POST" enctype="application/x-www-form-urlencoded" id="addToCartForm">
+                <img src="@Model.Product.PIC" width="100%" id="ProductImg">
+                <input type="hidden" name="pic" value="@Model.Product.PIC">
+        </div>
+        <div class="col-2">
+            <input type="hidden" name="idprod" value="@Model.Product.PRODID">
+            <h1>
+                @Model.Product.PRODNAME
+                <input type="hidden" name="name" value="@Model.Product.PRODNAME">
+            </h1>
+            <h4>Brand: <a href="/Sanpham?Brand=@Model.Product.CATEGORy.NAME" class="brand-hover">@Model.Product.CATEGORy.NAME</a></h4>
+            <h4>
+                VNĐ @string.Format("{0:#,0}", Model.Product.PRICE)
+                <input type="hidden" name="price" value="@Model.Product.PRICE">
+            </h4>
+            <h4>Cap: @Model.Product.CAP ML</h4>
+            <input type="number" value="1" name="QTY" min="1">
+            <button href="" class="btn" type="submit" onclick="addToCart()">Add To Cart</button>
+            <p class="text-warning bg-warning">
+
+
+            </p>
+            <h3>Product Details <i class="fa fa-indent"></i></h3>
+            <br>
+            <p class="description" data-fulltext="<%= data.des %>">
+                @Model.Product.DESCRIPT <span class="more-link">More</span>
+            </p>
+        </div>
+    </div>
+    </form>
+</div>
+
+<!-- title -->
+<div class="small-container">
+    <div class="row row-2">
+        <h2>Related Products</h2>
+        <a href="~/Sanpham" class="brand-hover">View More</a>
+    </div>
+</div>
+<!-- Products -->
+<div class="small-container">
+    <div class="row">
+        @foreach (var rd in Model.RelatedProducts)
+        {
+            <div class="col-4">
+                <a href="~/Sanpham/Chitiet/@rd.PRODID"><img src="@rd.PIC"></a>
+                <h4>@rd.PRODNAME</h4>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>@string.Format("{0:#,0}", rd.PRICE) VNĐ</p>
+            </div>
+        }
+
+    </div>
+</div>
+
+<!-- Footer -->
+@{ Html.RenderPartial("ClientFooter");}
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    function addToCart() {
+        event.preventDefault();
+            var userLoggedIn = "@(user != null ? "true" : "false")"; // Kiểm tra xem người dùng đã đăng nhập hay chưa
+
+            if (userLoggedIn === "true") {
+                var formData = $("#addToCartForm").serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Cart/Createcart", // Điều chỉnh đường dẫn tùy thuộc vào cấu trúc của ứng dụng của bạn
+                    data: formData,
+                    success: function (response) {
+                        // Hiển thị thông báo thành công
+                        //alert("Sản phẩm đã được thêm vào giỏ hàng!");
+                        Swal.fire({
+                            title: "Ngon!",
+                            text: "Đã thêm sản phẩm vào giỏ!",
+                            icon: "success",
+                        });
+                    },
+                    error: function (error) {
+                        console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
+                    }
+                });
+            } else {
+                // Hiển thị thông báo yêu cầu đăng nhập
+                //alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Bạn phải đăng nhập để thêm sản phẩm vào giỏ hàng!",
+                });
+            }
+        }
+</script>

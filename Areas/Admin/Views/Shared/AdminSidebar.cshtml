@@ -1,0 +1,53 @@
+﻿<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3 sidebar-sticky">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/Admin/User">
+                    <i class="bi bi-people"></i>
+                    Người dùng
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="@Url.Action("Index","Cate")">
+                    <i class="bi bi-tags-fill"></i>
+                    Danh mục
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="@Url.Action("Index","Product")">
+                    <i class="bi bi-house"></i>
+                    Sản Phẩm
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="@Url.Action("Index", "Order")">
+                    <i class="bi bi-receipt"></i>
+                    Đơn hàng
+                </a>
+            </li>
+            <br>
+            <!-- <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="/getuser">
+        <i class="bi bi-person-fill"></i>
+        Profile
+      </a>
+    </li> -->
+            @*<form action="/admin/logout" method="POST" enctype="application/x-www-form-urlencoded">
+            <li class="nav-item justify-content-center">
+                <a class="nav-link active" aria-current="page">
+                    <button type="submit" class="btn btn-danger" style="border-radius: 20px; width: 200px;">
+                        Đăng xuất
+                    </button>
+                </a>
+            </li>
+            </form>*@
+
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="@Url.Action("Logout","Login")">
+                <i class="bi bi-box-arrow-left"></i>
+                Đăng xuất
+              </a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,131 @@
+﻿@model WebAppPerfume.Models.PRODUCT
+@{
+    ViewBag.Title = "Chỉnh sửa";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+@{ 
+    Html.RenderPartial("AdminHeader");
+}
+<div class="container-fluid">
+    <div class="row">
+        @{
+            Html.RenderPartial("AdminSidebar");
+        }
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Chỉnh sửa: @Model.PRODNAME</h1>
+                <div class="btn-toolbar mb-2 mb-md 0">
+
+                </div>
+            </div>
+
+            <div class="col py-3">
+                <div class="row">
+                    <div class="col">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="~/Admin/product/Index">Dashboard</a></li>
+                                <li class="breadcrumb-item active">@Model.PRODNAME</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <form action="@Url.Action("edit","product", new {id = Model.PRODID })" method="POST" enctype="multipart/form-data">
+                <input value="@Model.PRODID" name="PRODID" type="hidden"/>
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="" name="prodname" value="@Model.PRODNAME" required>
+                    </div>
+
+                    <div class="col">
+                        <label for="">Giá</label>
+                        <input type="text" class="form-control" id="" name="price" value="@Model.PRICE" required>
+                    </div>
+                </div>
+
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Danh mục</label>
+                        <select class="form-select" aria-label="Default select example" name="idcate">
+                            @foreach (var cate in ViewBag.cate)
+                            {
+                                if (cate.CATEID == Model.idCATE)
+                                {
+                                    <option value="@cate.CATEID" selected>@cate.NAME</option>
+                                }
+                                else
+                                {
+                                    <option value="@cate.CATEID">@cate.NAME</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <label for="">Số lượng</label>
+                        <input type="number" class="form-control" id="" name="qty" value="@Model.QTY" required>
+                    </div>
+                </div>
+
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Ảnh</label>
+                        <input type="file" class="form-control" id="" name="new_pic" value="">
+                    </div>
+                    <div class="col">
+                        <img src="@Model.PIC" alt="" class="image-thumbnail mt-1" height="100">
+                        <input type="hidden" name="old_pic" id="" value="@Model.PIC">
+                    </div>
+                    <div class="col">
+                        <label for="">Dung tích</label>
+                        <input type="number" class="form-control" id="" name="cap" value="@Model.CAP" required>
+                    </div>
+                </div>
+
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Mô tả</label>
+                        <textarea type="text" class="form-control" rows="3" id="" name="DESCRIPT" value="" required>@Model.DESCRIPT</textarea>
+                    </div>
+
+                </div>
+
+                <div class="form-group mb-4">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" id="deleteButton" data-bs-target="#deleteModal">Xóa</button>
+
+                </div>
+
+            </form>
+            <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">Thông báo.</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                Bạn thực sự muốn xóa <b class="fw-bold">@Model.PRODNAME</b> chứ?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <form action="~/Admin/Product/Delete/@Model.PRODID?_method=DELETE" method="POST" class="position-relative">
+                                <button type="submit" class="btn btn-primary">Xác nhận</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

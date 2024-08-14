@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Tài khoản";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+}
+
+<div class="container">
+    @{
+        Html.RenderPartial("ClientNav");
+    }
+</div>
+
+<!-- Account Page -->
+<div class="account-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <img src="/image/assets/logo4.png" width="100%">
+            </div>
+            <div class="col-2">
+                <div class="form-container">
+                    <div class="form-btn">
+                        <span onclick="login()">Login</span>
+                        <span onclick="register()">Register</span>
+                        <hr id="Indicator">
+                    </div>
+                    <form id="LoginForm" action="@Url.Action("login", "acc")" enctype="application/x-www-form-urlencoded" method="post">
+                        @if (TempData["errLogin"] != null)
+                        {
+                            <p style="color:red">
+                                @TempData["errLogin"]
+                            </p>
+                        }
+                        <input type="text" placeholder="username" name="username" required>
+                        <input type="password" placeholder="password" name="password" required>
+                        <button type="submit" class="btn">Login</button>
+                        <a href="">Forget Password</a>
+                    </form>
+
+                    <form id="RegForm" action="@Url.Action("register", "acc")" method="post" enctype="application/x-www-form-urlencoded">
+                        <input type="text" placeholder="Username" name="username" required>
+                        @if (TempData["errRegis"] != null)
+                        {
+                            <p style="color:red">
+                                @TempData["errRegis"]
+                            </p>
+                        }
+                        <input type="email" placeholder="Email" name="email" required>
+                        <input type="password" placeholder="Password" name="password" required>
+                        <button type="submit" class="btn">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Footer -->
+@{
+    Html.RenderPartial("ClientFooter");
+}
+
+<!-- javascript -->
+
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+    function menutoggle() {
+        if (MenuItems.style.maxHeight == "0px") {
+            MenuItems.style.maxHeight = "200px"
+        }
+        else {
+            MenuItems.style.maxHeight = "0px"
+        }
+    }
+</script>
+
+<!-- Toggle Form -->
+<script>
+    var LoginForm = document.getElementById("LoginForm");
+    var RegForm = document.getElementById("RegForm");
+    var Indicator = document.getElementById("Indicator");
+    function login() {
+        RegForm.style.transform = "translatex(300px)";
+        LoginForm.style.transform = "translatex(300px)";
+        Indicator.style.transform = "translate(0px)";
+
+    }
+    function register() {
+        RegForm.style.transform = "translatex(0px)";
+        LoginForm.style.transform = "translatex(0px)";
+        Indicator.style.transform = "translateX(100px)";
+
+    }
+</script>

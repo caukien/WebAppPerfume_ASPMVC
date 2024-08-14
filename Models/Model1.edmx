@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NUOCHOAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CART">
+          <Key>
+            <PropertyRef Name="CARTID" />
+          </Key>
+          <Property Name="CARTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idUSER" Type="int" />
+          <Property Name="idPROD" Type="int" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="200" />
+          <Property Name="PRICE" Type="float" />
+          <Property Name="PIC" Type="nvarchar" MaxLength="255" />
+          <Property Name="QTY" Type="int" />
+        </EntityType>
+        <EntityType Name="CATEGORIES">
+          <Key>
+            <PropertyRef Name="CATEID" />
+          </Key>
+          <Property Name="CATEID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="KHACHHANG">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERNAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="FIRSTNAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="LASTNAME" Type="nvarchar" MaxLength="100" />
+          <Property Name="EMAIL" Type="varchar" MaxLength="100" />
+          <Property Name="PASSWORD" Type="varchar" MaxLength="100" />
+          <Property Name="ISADMIN" Type="bit" />
+          <Property Name="SDT" Type="nchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="ORDERID" />
+          </Key>
+          <Property Name="ORDERID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="USERID" Type="int" />
+          <Property Name="STATUS" Type="nvarchar" MaxLength="150" />
+          <Property Name="CREATETIME" Type="datetime" />
+          <Property Name="Total" Type="float" />
+          <Property Name="Receiver" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Method" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="ODID" />
+          </Key>
+          <Property Name="ODID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="orderID" Type="int" />
+          <Property Name="proName" Type="nvarchar" MaxLength="200" />
+          <Property Name="proPrice" Type="float" />
+          <Property Name="proPIC" Type="nvarchar" MaxLength="255" />
+          <Property Name="qty" Type="int" />
+          <Property Name="proID" Type="int" />
+        </EntityType>
+        <EntityType Name="PRODUCTS">
+          <Key>
+            <PropertyRef Name="PRODID" />
+          </Key>
+          <Property Name="PRODID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRODNAME" Type="nvarchar" MaxLength="200" />
+          <Property Name="PRICE" Type="float" />
+          <Property Name="idCATE" Type="int" />
+          <Property Name="QTY" Type="int" />
+          <Property Name="CAP" Type="int" />
+          <Property Name="PIC" Type="nvarchar" MaxLength="255" />
+          <Property Name="DESCRIPT" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_CART_KHACHHANG">
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="0..1" />
+          <End Role="CART" Type="Self.CART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACHHANG">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="CART">
+              <PropertyRef Name="idUSER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CART_PRODUCTS">
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="0..1" />
+          <End Role="CART" Type="Self.CART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTS">
+              <PropertyRef Name="PRODID" />
+            </Principal>
+            <Dependent Role="CART">
+              <PropertyRef Name="idPROD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ORDER_KHACHHANG">
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="0..1" />
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACHHANG">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="ORDER">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_ORDER">
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="ORDERID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="orderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_PRODUCTS">
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="0..1" />
+          <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTS">
+              <PropertyRef Name="PRODID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="proID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTS_CATEGORIES">
+          <End Role="CATEGORIES" Type="Self.CATEGORIES" Multiplicity="0..1" />
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIES">
+              <PropertyRef Name="CATEID" />
+            </Principal>
+            <Dependent Role="PRODUCTS">
+              <PropertyRef Name="idCATE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NUOCHOAModelStoreContainer">
+          <EntitySet Name="CART" EntityType="Self.CART" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORIES" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="KHACHHANG" EntityType="Self.KHACHHANG" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER" EntityType="Self.ORDER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CART_KHACHHANG" Association="Self.FK_CART_KHACHHANG">
+            <End Role="KHACHHANG" EntitySet="KHACHHANG" />
+            <End Role="CART" EntitySet="CART" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CART_PRODUCTS" Association="Self.FK_CART_PRODUCTS">
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+            <End Role="CART" EntitySet="CART" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ORDER_KHACHHANG" Association="Self.FK_ORDER_KHACHHANG">
+            <End Role="KHACHHANG" EntitySet="KHACHHANG" />
+            <End Role="ORDER" EntitySet="ORDER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_ORDER" Association="Self.FK_OrderDetail_ORDER">
+            <End Role="ORDER" EntitySet="ORDER" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_PRODUCTS" Association="Self.FK_OrderDetail_PRODUCTS">
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+            <End Role="OrderDetail" EntitySet="OrderDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTS_CATEGORIES" Association="Self.FK_PRODUCTS_CATEGORIES">
+            <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NUOCHOAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CART">
+          <Key>
+            <PropertyRef Name="CARTID" />
+          </Key>
+          <Property Name="CARTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idUSER" Type="Int32" />
+          <Property Name="idPROD" Type="Int32" />
+          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Double" />
+          <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="KHACHHANG" Relationship="Self.FK_CART_KHACHHANG" FromRole="CART" ToRole="KHACHHANG" />
+          <NavigationProperty Name="PRODUCT" Relationship="Self.FK_CART_PRODUCTS" FromRole="CART" ToRole="PRODUCTS" />
+          <Property Name="QTY" Type="Int32" />
+        </EntityType>
+        <EntityType Name="CATEGORy">
+          <Key>
+            <PropertyRef Name="CATEID" />
+          </Key>
+          <Property Name="CATEID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRODUCTS" Relationship="Self.FK_PRODUCTS_CATEGORIES" FromRole="CATEGORIES" ToRole="PRODUCTS" />
+        </EntityType>
+        <EntityType Name="KHACHHANG">
+          <Key>
+            <PropertyRef Name="USERID" />
+          </Key>
+          <Property Name="USERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FIRSTNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LASTNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ISADMIN" Type="Boolean" />
+          <Property Name="SDT" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_KHACHHANG" FromRole="KHACHHANG" ToRole="CART" />
+          <NavigationProperty Name="ORDERs" Relationship="NUOCHOAModel.FK_ORDER_KHACHHANG" FromRole="KHACHHANG" ToRole="ORDER" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="ORDERID" />
+          </Key>
+          <Property Name="ORDERID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="USERID" Type="Int32" />
+          <Property Name="STATUS" Type="String" MaxLength="150" />
+          <Property Name="CREATETIME" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="KHACHHANG" Relationship="NUOCHOAModel.FK_ORDER_KHACHHANG" FromRole="ORDER" ToRole="KHACHHANG" />
+          <NavigationProperty Name="OrderDetails" Relationship="NUOCHOAModel.FK_OrderDetail_ORDER" FromRole="ORDER" ToRole="OrderDetail" />
+          <Property Name="Total" Type="Double" />
+          <Property Name="Receiver" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Method" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="PRODID" />
+          </Key>
+          <Property Name="PRODID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRODNAME" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PRICE" Type="Double" />
+          <Property Name="idCATE" Type="Int32" />
+          <Property Name="QTY" Type="Int32" />
+          <Property Name="CAP" Type="Int32" />
+          <Property Name="PIC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DESCRIPT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CARTs" Relationship="Self.FK_CART_PRODUCTS" FromRole="PRODUCTS" ToRole="CART" />
+          <NavigationProperty Name="CATEGORy" Relationship="Self.FK_PRODUCTS_CATEGORIES" FromRole="PRODUCTS" ToRole="CATEGORIES" />
+          <NavigationProperty Name="OrderDetails" Relationship="NUOCHOAModel.FK_OrderDetail_PRODUCTS" FromRole="PRODUCT" ToRole="OrderDetail" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_CART_KHACHHANG">
+          <End Role="KHACHHANG" Type="Self.KHACHHANG" Multiplicity="0..1" />
+          <End Role="CART" Type="Self.CART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACHHANG">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="CART">
+              <PropertyRef Name="idUSER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CART_PRODUCTS">
+          <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="0..1" />
+          <End Role="CART" Type="Self.CART" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTS">
+              <PropertyRef Name="PRODID" />
+            </Principal>
+            <Dependent Role="CART">
+              <PropertyRef Name="idPROD" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTS_CATEGORIES">
+          <End Role="CATEGORIES" Type="Self.CATEGORy" Multiplicity="0..1" />
+          <End Role="PRODUCTS" Type="Self.PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CATEGORIES">
+              <PropertyRef Name="CATEID" />
+            </Principal>
+            <Dependent Role="PRODUCTS">
+              <PropertyRef Name="idCATE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NUOCHOAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CARTs" EntityType="Self.CART" />
+          <EntitySet Name="CATEGORIES" EntityType="Self.CATEGORy" />
+          <EntitySet Name="KHACHHANGs" EntityType="Self.KHACHHANG" />
+          <EntitySet Name="ORDERs" EntityType="Self.ORDER" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCT" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_CART_KHACHHANG" Association="Self.FK_CART_KHACHHANG">
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+            <End Role="CART" EntitySet="CARTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CART_PRODUCTS" Association="Self.FK_CART_PRODUCTS">
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+            <End Role="CART" EntitySet="CARTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTS_CATEGORIES" Association="Self.FK_PRODUCTS_CATEGORIES">
+            <End Role="CATEGORIES" EntitySet="CATEGORIES" />
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+          </AssociationSet>
+          <EntitySet Name="OrderDetails" EntityType="NUOCHOAModel.OrderDetail" />
+          <AssociationSet Name="FK_ORDER_KHACHHANG" Association="NUOCHOAModel.FK_ORDER_KHACHHANG">
+            <End Role="KHACHHANG" EntitySet="KHACHHANGs" />
+            <End Role="ORDER" EntitySet="ORDERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_ORDER" Association="NUOCHOAModel.FK_OrderDetail_ORDER">
+            <End Role="ORDER" EntitySet="ORDERs" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderDetail_PRODUCTS" Association="NUOCHOAModel.FK_OrderDetail_PRODUCTS">
+            <End Role="PRODUCT" EntitySet="PRODUCTS" />
+            <End Role="OrderDetail" EntitySet="OrderDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="ODID" />
+          </Key>
+          <Property Name="ODID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="orderID" Type="Int32" />
+          <Property Name="proName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="proPrice" Type="Double" />
+          <Property Name="proPIC" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="qty" Type="Int32" />
+          <Property Name="proID" Type="Int32" />
+          <NavigationProperty Name="ORDER" Relationship="NUOCHOAModel.FK_OrderDetail_ORDER" FromRole="OrderDetail" ToRole="ORDER" />
+          <NavigationProperty Name="PRODUCT" Relationship="NUOCHOAModel.FK_OrderDetail_PRODUCTS" FromRole="OrderDetail" ToRole="PRODUCT" />
+        </EntityType>
+        <Association Name="FK_ORDER_KHACHHANG">
+          <End Type="NUOCHOAModel.KHACHHANG" Role="KHACHHANG" Multiplicity="0..1" />
+          <End Type="NUOCHOAModel.ORDER" Role="ORDER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="KHACHHANG">
+              <PropertyRef Name="USERID" />
+            </Principal>
+            <Dependent Role="ORDER">
+              <PropertyRef Name="USERID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_ORDER">
+          <End Type="NUOCHOAModel.ORDER" Role="ORDER" Multiplicity="0..1" />
+          <End Type="NUOCHOAModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="ORDERID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="orderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderDetail_PRODUCTS">
+          <End Type="NUOCHOAModel.PRODUCT" Role="PRODUCT" Multiplicity="0..1" />
+          <End Type="NUOCHOAModel.OrderDetail" Role="OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="PRODID" />
+            </Principal>
+            <Dependent Role="OrderDetail">
+              <PropertyRef Name="proID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NUOCHOAModelStoreContainer" CdmEntityContainer="NUOCHOAEntities">
+          <EntitySetMapping Name="CARTs">
+            <EntityTypeMapping TypeName="NUOCHOAModel.CART">
+              <MappingFragment StoreEntitySet="CART">
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="CARTID" ColumnName="CARTID" />
+                <ScalarProperty Name="idUSER" ColumnName="idUSER" />
+                <ScalarProperty Name="idPROD" ColumnName="idPROD" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CATEGORIES">
+            <EntityTypeMapping TypeName="NUOCHOAModel.CATEGORy">
+              <MappingFragment StoreEntitySet="CATEGORIES">
+                <ScalarProperty Name="CATEID" ColumnName="CATEID" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="KHACHHANGs">
+            <EntityTypeMapping TypeName="NUOCHOAModel.KHACHHANG">
+              <MappingFragment StoreEntitySet="KHACHHANG">
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+                <ScalarProperty Name="FIRSTNAME" ColumnName="FIRSTNAME" />
+                <ScalarProperty Name="LASTNAME" ColumnName="LASTNAME" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="ISADMIN" ColumnName="ISADMIN" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDERs">
+            <EntityTypeMapping TypeName="NUOCHOAModel.ORDER">
+              <MappingFragment StoreEntitySet="ORDER">
+                <ScalarProperty Name="Method" ColumnName="Method" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Receiver" ColumnName="Receiver" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="ORDERID" ColumnName="ORDERID" />
+                <ScalarProperty Name="USERID" ColumnName="USERID" />
+                <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+                <ScalarProperty Name="CREATETIME" ColumnName="CREATETIME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTS">
+            <EntityTypeMapping TypeName="NUOCHOAModel.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCTS">
+                <ScalarProperty Name="PRODID" ColumnName="PRODID" />
+                <ScalarProperty Name="PRODNAME" ColumnName="PRODNAME" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
+                <ScalarProperty Name="idCATE" ColumnName="idCATE" />
+                <ScalarProperty Name="QTY" ColumnName="QTY" />
+                <ScalarProperty Name="CAP" ColumnName="CAP" />
+                <ScalarProperty Name="PIC" ColumnName="PIC" />
+                <ScalarProperty Name="DESCRIPT" ColumnName="DESCRIPT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="NUOCHOAModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="NUOCHOAModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetail">
+                <ScalarProperty Name="proID" ColumnName="proID" />
+                <ScalarProperty Name="qty" ColumnName="qty" />
+                <ScalarProperty Name="proPIC" ColumnName="proPIC" />
+                <ScalarProperty Name="proPrice" ColumnName="proPrice" />
+                <ScalarProperty Name="proName" ColumnName="proName" />
+                <ScalarProperty Name="orderID" ColumnName="orderID" />
+                <ScalarProperty Name="ODID" ColumnName="ODID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

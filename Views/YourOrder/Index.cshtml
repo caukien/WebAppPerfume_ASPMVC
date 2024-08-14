@@ -1,0 +1,73 @@
+﻿@model List<WebAppPerfume.Models.ORDER>
+@{
+    ViewBag.Title = "Đơn hàng";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+    int i = 0;
+}
+<div class="container">
+    @{
+        Html.RenderPartial("ClientNav");
+    }
+</div>
+
+<!-- Cart items details -->
+<div class="small-container cart-page">
+    <table>
+        <tr>
+            <th>No</th>
+            <th>Status</th>
+            <th>Create Time</th>
+            <th>Total</th>
+            <th>Receiver</th>
+            <th>Address</th>
+            <th>Payment</th>
+        </tr>
+        @if (Model != null && Model.Any()) // Kiểm tra xem Model có tồn tại và không rỗng
+        {
+            foreach (var element in Model)
+            {
+                i++;
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Detail", "YourOrder", new {id = element.ORDERID })">@element.ORDERID</a>
+                    </td>
+                    @if(@element.STATUS == "approved")
+                    {
+                        <td>Đã thanh toán</td>
+                    }
+                    else
+                    {
+                        <td>Chưa thanh toán</td>
+                    }
+                    <td>@element.CREATETIME</td>
+                    <td>@string.Format("{0:#,0}", element.Total) VND</td>
+                    <td>@element.Receiver</td>
+                    <td>@element.Address</td>
+                    @if(@element.Method == "paypal")
+                    {
+                        <td>PAYPAL</td>
+                    }
+                    else
+                    {
+                        <td>COD</td>
+                    }
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4">Empty</td>
+            </tr>
+        }
+    </table>
+    <br>
+    <div class="total-price">
+        
+    </div>
+
+</div>
+<!-- Footer -->
+@{
+    Html.RenderPartial("ClientFooter");
+}

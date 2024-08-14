@@ -1,0 +1,30 @@
+﻿
+@{ 
+    var user = WebAppPerfume.App_Start.SessionConfig.GetUser();
+}
+<div class="navbar">
+    <div class="logo">
+        <a href="/"><img src="~/Image/assets/logo.png" alt="logo" width="125px"></a>
+    </div>
+    <nav>
+        <ul id="MenuItems">
+            <li><a href="/">Home</a></li>
+            <li><a href="/Sanpham">Products</a></li>
+            <li><a href="">About</a></li>
+            <li><a href="">Contact</a></li>
+            @if (user == null)
+            {
+                <li><a href="/acc">Account</a></li>
+            }
+            else
+            {
+                <li><a href="@Url.Action("Index", "YourOrder")">Order</a></li>
+                <li><a href="@Url.Action("logout", "Acc")">Logout</a></li>                
+            }
+
+        </ul>
+    </nav>
+    <a href="/cart"><img src="~/Image/assets/cart.png" width="30px" height="30px"></a>
+    <small class="cart-qty">0</small>
+    <img src="~/Image/assets/menu.png" class="menu-icon" onclick="menutoggle()">
+</div>

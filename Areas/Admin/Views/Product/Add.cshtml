@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+@{
+    Html.RenderPartial("AdminHeader");
+}
+<div class="container-fluid">
+    <div class="row">
+        @{
+            Html.RenderPartial("AdminSidebar");
+        }
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">THÊM SẢN PHẨM</h1>
+                <div class="btn-toolbar mb-2 mb-md 0">
+
+                </div>
+            </div>
+
+            <div class="col py-3">
+                <div class="row">
+                    <div class="col">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="@Url.Action("Index","Product")">Dashboard</a></li>
+                                <li class="breadcrumb-item active">New Product</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+
+
+            @*<form action="@Url.Action("Add","Product")" method="POST" enctype="multipart/form-data">*@
+                <form action="~/Admin/Product/Add" method="POST" enctype="multipart/form-data">
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Tên sản phẩm</label>
+                        <input type="text" class="form-control" id="" name="prodname" value="" required>
+                    </div>
+
+                    <div class="col">
+                        <label for="">Giá</label>
+                        <input type="text" class="form-control" id="" name="price" value="" required>
+                    </div>
+                </div>
+
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Danh mục</label>
+                        <select class="form-select" aria-label="Default select example" name="idCATE">
+                            @foreach(var cate in ViewBag.cate){
+                                <option value="@cate.CATEID">@cate.NAME</option>
+                            }
+                        </select>
+
+                    </div>
+
+                    <div class="col">
+                        <label for="">Số lượng</label>
+                        <input type="number" class="form-control" id="" name="qty" value="" required>
+                    </div>
+                </div>
+
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Ảnh</label>
+                        <input type="file" class="form-control" id="pic" name="pic" value="" required>
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                @ViewBag.Message;
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="col">
+                        <label for="">Dung tích</label>
+                        <input type="number" class="form-control" id="" name="cap" value="" required>
+                    </div>
+                </div>
+
+                <div class="row form-group mb-4">
+                    <div class="col">
+                        <label for="">Mô tả</label>
+                        <textarea type="text" class="form-control" rows="3" id="" name="descript" value="" required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="form-group mb-4">
+                    <button type="submit" class="btn btn-primary">Thêm</button>
+                </div>
+
+            </form>
+        </main>
+    </div>
+</div>

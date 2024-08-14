@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Success";
+    Layout = "~/Views/Shared/ClientLayout.cshtml";
+}
+
+<div class="container">
+    @{
+        Html.RenderPartial("ClientNav");
+    }
+</div>
+
+<div class="account-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <div class="form-container">
+                    <img src="https://media.tenor.com/G6zq2BiCYXUAAAAi/happy-yes.gif" style="height:350px" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    Html.RenderPartial("ClientFooter");
+}
